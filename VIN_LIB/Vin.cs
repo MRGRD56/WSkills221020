@@ -69,12 +69,12 @@ namespace VIN_LIB
         private static bool ContainsCorrectCharacters(string vin)
         {
             var pattern = @"[0-9|ABCDEFGHJKLMNPRSTUVWXYZ]{8}[0-9|X]{1}[0-9|ABCDEFGHJKLMNPRSTUVWXYZ]{4}[0-9]{4}";
-            return Regex.IsMatch(vin, pattern, RegexOptions.IgnoreCase);
+            return Regex.IsMatch(vin, pattern);
         }
 
         private static bool IsCorrectCountryCode(string vin)
         {
-            var cc = new string(vin.Take(2).ToArray()).ToUpper();
+            var cc = new string(vin.Take(2).ToArray());
             var isIncorrect = Regex.IsMatch(cc, "(A[P-Z|0-9])") ||
                               Regex.IsMatch(cc, "(B[S-Z|0-9])") ||
                               Regex.IsMatch(cc, "(C[S-Z|0-9])") ||
@@ -99,7 +99,7 @@ namespace VIN_LIB
 
         private static bool IsCorrectYear(string vin)
         {
-            var yearCode = vin[10 - 1].ToString().ToUpper();
+            var yearCode = vin[10 - 1].ToString();
             return yearCode != "U" && yearCode != "Z" && yearCode != "0";
         }
         
