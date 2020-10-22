@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 
@@ -14,14 +15,34 @@ namespace VIN_LIB
             ContainsCorrectCharacters(vin) &&
             IsCorrectCountryCode(vin) &&
             IsCorrectYear(vin);
-
-        // public static string GetVINCountry(string vin)
-        // {
-        //     
-        // }
         
         /// <summary>
-        /// Возвращает год производства транспорта.
+        /// Вовзращает страну производства транспортного средства.
+        /// </summary>
+        /// <param name="vin">Идентификационный номер ТС.</param>\\
+        public static string GetVINCountry(string vin)
+        {
+            using (StreamReader sr = new StreamReader($@"{AppDomain.CurrentDomain.BaseDirectory}\..\..\..\CountriesCodes.dat"))
+            {
+                var code = new string(vin.Take(2).ToArray());
+                string line;
+                while (!string.IsNullOrEmpty(line = sr.ReadLine()))
+                {
+                    var pair = GetCountryPair(line);
+                    var pattern = pair.Item1;
+                    var country = pair.Item2;
+                    if (Regex.IsMatch(code, pattern))
+                    {
+                        return country;
+                    }
+                }
+
+                return "unknown country";
+            }
+        }
+        
+        /// <summary>
+        /// Возвращает год производства транспортного средства.
         /// </summary>
         /// <param name="vin">Идентификационный номер ТС.</param>
         public static int GetTransportYear(string vin)
@@ -80,6 +101,20 @@ namespace VIN_LIB
         {
             var yearCode = vin[10 - 1].ToString().ToUpper();
             return yearCode != "U" && yearCode != "Z" && yearCode != "0";
+        }
+        
+        /// <summary>
+        /// Возвращает объект класса Tuple, где первый элемент -
+        /// регулярное выражение, второй - название страны.
+        /// </summary>
+        /// <param name="line"></param>
+        /// <returns></returns>
+        private static Tuple<string, string> GetCountryPair(string line)
+        {
+            // "K[S-Z|0-9] Казахстан" -> ("K[S-Z|0-9]", "Казахстан")
+            line = line.Trim();
+            var arr = line.Split(' ');
+            return new Tuple<string, string>(arr[0], arr[1]);
         }
     }
 }
