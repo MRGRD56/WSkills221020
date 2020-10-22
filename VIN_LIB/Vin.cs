@@ -1,10 +1,15 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Text.RegularExpressions;
 
 namespace VIN_LIB
 {
     public static class Vin
     {
+        /// <summary>
+        /// Проверяет VIN на подлинность.
+        /// </summary>
+        /// <param name="vin">Идентификационный номер ТС.</param>
         public static bool CheckVIN(string vin) =>
             ContainsCorrectCharacters(vin) &&
             IsCorrectCountryCode(vin) &&
@@ -14,21 +19,41 @@ namespace VIN_LIB
         // {
         //     
         // }
+        
+        /// <summary>
+        /// Возвращает год производства транспорта.
+        /// </summary>
+        /// <param name="vin">Идентификационный номер ТС.</param>
+        public static int GetTransportYear(string vin)
+        {
+            var currentYear = DateTime.Today.Year;
+            var chars = "ABCDEFGHJKLMNPRSTVWXY123456789";
+            var yearCode = vin[10 - 1].ToString().ToUpper();
 
-        // public static int GetTransportYear(string vin)
-        // {
-        //     
-        // }
+            var i = chars.IndexOf(yearCode, StringComparison.Ordinal);
+            var year = 1980 + i;
+            while (true)
+            {
+                //F - 1985 -> F - 2015
+                if (year + 30 <= currentYear)
+                {
+                    year += 30;
+                    continue;
+                }
+
+                return year;
+            }
+        }
 
         private static bool ContainsCorrectCharacters(string vin)
         {
             var pattern = @"[0-9|ABCDEFGHJKLMNPRSTUVWXYZ]{8}[0-9|X]{1}[0-9|ABCDEFGHJKLMNPRSTUVWXYZ]{4}[0-9]{4}";
-            return Regex.IsMatch(vin, pattern);
+            return Regex.IsMatch(vin, pattern, RegexOptions.IgnoreCase);
         }
 
         private static bool IsCorrectCountryCode(string vin)
         {
-            var cc = new string(vin.Take(2).ToArray());
+            var cc = new string(vin.Take(2).ToArray()).ToUpper();
             var isIncorrect = Regex.IsMatch(cc, "(A[P-Z|0-9])") ||
                               Regex.IsMatch(cc, "(B[S-Z|0-9])") ||
                               Regex.IsMatch(cc, "(C[S-Z|0-9])") ||
@@ -53,8 +78,8 @@ namespace VIN_LIB
 
         private static bool IsCorrectYear(string vin)
         {
-            var yearCode = vin[10 - 1];
-            return yearCode != 'U' && yearCode != 'Z' && yearCode != '0';
+            var yearCode = vin[10 - 1].ToString().ToUpper();
+            return yearCode != "U" && yearCode != "Z" && yearCode != "0";
         }
     }
 }
