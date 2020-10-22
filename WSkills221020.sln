@@ -6,6 +6,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VinLibUnitTest", "VinLibUni
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "REG_MARK_LIB", "REG_MARK_LIB\REG_MARK_LIB.csproj", "{93DB64AB-B728-43CD-AFB8-0991544C20F6}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RegMarkLibTest", "RegMarkLibTest\RegMarkLibTest.csproj", "{FD9228C9-9F02-422D-A6EC-74F7E9417984}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -24,5 +26,9 @@ Global
 		{93DB64AB-B728-43CD-AFB8-0991544C20F6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{93DB64AB-B728-43CD-AFB8-0991544C20F6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{93DB64AB-B728-43CD-AFB8-0991544C20F6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FD9228C9-9F02-422D-A6EC-74F7E9417984}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FD9228C9-9F02-422D-A6EC-74F7E9417984}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FD9228C9-9F02-422D-A6EC-74F7E9417984}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FD9228C9-9F02-422D-A6EC-74F7E9417984}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
