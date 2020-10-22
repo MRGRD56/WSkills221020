@@ -12,7 +12,7 @@ namespace RegMarkLibTest
         {
             Assert.True(RegMark.CheckMark("A111AA777"));
             Assert.True(RegMark.CheckMark("A252KH716"));
-            Assert.False(RegMark.CheckMark("Q134JD788 "));
+            Assert.False(RegMark.CheckMark("Q134JD788"));
         }
     }
 }
