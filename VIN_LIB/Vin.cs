@@ -27,6 +27,7 @@ namespace VIN_LIB
 
             foreach (var t in countriesData)
             {
+                if (string.IsNullOrWhiteSpace(t)) break;
                 var (pattern, country) = GetCountryPair(t);
                 if (Regex.IsMatch(code, pattern))
                 {

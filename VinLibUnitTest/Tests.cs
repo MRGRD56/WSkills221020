@@ -34,6 +34,8 @@ namespace VinLibUnitTest
         {
             Assert.True(Vin.GetVINCountry("52111111111111111") == "США");
             Assert.True(Vin.GetVINCountry("TZ111111111111111") == "Португалия");
+            Assert.True(Vin.GetVINCountry("89111111111111111") == "unknown country");
+            Assert.True(Vin.GetVINCountry("TM111111111111111") == "Чехия");
         }
     }
 }
