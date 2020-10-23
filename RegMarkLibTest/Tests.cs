@@ -40,7 +40,10 @@ namespace RegMarkLibTest
         [Test]
         public void GetCombinationsCountInRangeTest()
         {
-            
+            Assert.True(RegMark.GetCombinationsCountInRange("A123AA716", "A125AA716") == 3);
+            Assert.True(RegMark.GetCombinationsCountInRange("A999AA716", "A010AB716") == 12);
+            Assert.True(RegMark.GetCombinationsCountInRange("B567AA116", "B568AA116") == 2);
+            Assert.True(RegMark.GetCombinationsCountInRange("A999XX116", "B010AA116") == 12);
         }
     }
 }

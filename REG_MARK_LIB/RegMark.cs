@@ -92,7 +92,7 @@ namespace REG_MARK_LIB
         /// </summary>
         public static int GetCombinationsCountInRange(string mark1, string mark2)
         {
-            var count = 0;
+            var count = 1;
             while (CompareRegMarks(mark1, mark2) < 0)
             {
                 mark1 = GetNextMarkAfter(mark1);
