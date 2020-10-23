@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Threading;
 
 namespace REG_MARK_LIB
 {
@@ -71,7 +72,13 @@ namespace REG_MARK_LIB
 
         public static string GetNextMarkAfterInRange(string prevMark, string rangeStart, string rangeEnd)
         {
-            throw new NotImplementedException();
+            var nextMark = GetNextMarkAfter(prevMark);
+            if (CompareRegMarks(rangeStart, nextMark) <= 0 && CompareRegMarks(rangeEnd, nextMark) >= 0)
+            {
+                return nextMark;
+            }
+
+            return "out of stock";
         }
 
         public static int GetCombinationsCountInRange(string mark1, string mark2)
@@ -101,5 +108,53 @@ namespace REG_MARK_LIB
                     throw new Exception("GetMarkNumbersString() error");
             }
         }
+        
+        /// <summary>
+        /// Сравнивает две буквы из номерных знаков. >0 [l1 > l2], =0 - [l1 == l2], &lt;0 - [l1 &lt; l2].
+        /// </summary>
+        /// <param name="l1"></param>
+        /// <param name="l2"></param>
+        /// <returns></returns>
+        private static int CompareRegMarkLetters(char l1, char l2)
+        {
+            var letters = "ABEKMHOPCTYX";
+            return letters.IndexOf(l1) - letters.IndexOf(l2);
+        }
+
+        /// <summary>
+        /// Сравнивает два номерных знака. >0 [mark1 > mark2], =0 - [mark1 == mark2], &lt;0 - [mark1 &lt; mark2].
+        /// </summary>
+        /// <returns></returns>
+        private static int CompareRegMarks(string mark1, string mark2)
+        {
+            // "a123bc56", "e456hk156"
+            var mark1Numbers = GetNumbersFromMark(mark1);
+            var mark1Letters = GetLettersFromMark(mark1);
+            var mark2Numbers = GetNumbersFromMark(mark2);
+            var mark2Letters = GetLettersFromMark(mark2);
+
+            if (CompareRegMarkLetters(mark1Letters[0], mark2Letters[0]) != 0)
+            {
+                return CompareRegMarkLetters(mark1Letters[0], mark2Letters[0]);
+            }
+            if (CompareRegMarkLetters(mark1Letters[1], mark2Letters[1]) != 0)
+            {
+                return CompareRegMarkLetters(mark1Letters[1], mark2Letters[1]);
+            }
+
+            if (CompareRegMarkLetters(mark1Letters[2], mark2Letters[2]) != 0)
+            {
+                return CompareRegMarkLetters(mark1Letters[2], mark2Letters[2]);
+            }
+
+            return mark1Numbers - mark2Numbers;
+        }
+        
+        private static int GetNumbersFromMark(string mark) =>
+            Convert.ToInt32(new string(mark.Skip(1).Take(3).ToArray()));
+        private static StringBuilder GetLettersFromMark(string mark) =>
+            new StringBuilder(new string(mark.Take(1).ToArray()) + new string(mark.Skip(4).Take(2).ToArray()));
+        private static string GetRegionFromMark(string mark) =>
+            new string(mark.Skip(6).ToArray());
     }
 }

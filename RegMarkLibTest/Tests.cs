@@ -1,5 +1,4 @@
-﻿using System;
-using NUnit.Framework;
+﻿using NUnit.Framework;
 using REG_MARK_LIB;
 
 namespace RegMarkLibTest
