@@ -69,7 +69,13 @@ namespace REG_MARK_LIB
 
             return $"{markLetters[0]}{GetMarkNumbersString(markNumbers + 1)}{markLetters[1]}{markLetters[2]}{region}";
         }
-
+        
+        /// <summary>
+        /// Возвращает следующий номерной знак в заданном диапазоне.
+        /// </summary>
+        /// <param name="prevMark">Предыдущий знак.</param>
+        /// <param name="rangeStart">Начало диапазона.</param>
+        /// <param name="rangeEnd">Конец диапазона.</param>
         public static string GetNextMarkAfterInRange(string prevMark, string rangeStart, string rangeEnd)
         {
             var nextMark = GetNextMarkAfter(prevMark);
@@ -80,7 +86,10 @@ namespace REG_MARK_LIB
 
             return "out of stock";
         }
-
+        
+        /// <summary>
+        /// Возвращает количество возможных номерных знаков в заданном диапазоне.
+        /// </summary>
         public static int GetCombinationsCountInRange(string mark1, string mark2)
         {
             var count = 0;
@@ -93,12 +102,18 @@ namespace REG_MARK_LIB
             return count;
         }
         
+        /// <summary>
+        /// Возвращает следующую букву номерного знака.
+        /// </summary>
         private static char IncrementMarkLetter(char letter)
         {
             var letters = "ABEKMHOPCTYX";
             return letter == 'X' ? 'A' : letters[letters.IndexOf(letter) + 1];
         }
-
+        
+        /// <summary>
+        /// Возвращает буквы номерного знака.
+        /// </summary>
         private static string GetMarkNumbersString(int nums)
         {
             var numsString = nums.ToString();
