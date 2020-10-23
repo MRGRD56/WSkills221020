@@ -30,10 +30,8 @@ namespace RegMarkLibTest
         public void GetNextMarkAfterInRangeTest()
         {
             Assert.True(RegMark.GetNextMarkAfterInRange("A105AA716", "A100AA716", "A110AA716") == "A106AA716");
-            Assert.True(RegMark.GetNextMarkAfterInRange("A110AA716", "A100AA716", "A110AA716") == "out of stock"); //failed
+            Assert.True(RegMark.GetNextMarkAfterInRange("A110AA716", "A100AA716", "A110AA716") == "out of stock");
             Assert.True(RegMark.GetNextMarkAfterInRange("A999AA716", "A100AA716", "A006AB716") == "A000AB716");
-            // var a = RegMark.GetNextMarkAfterInRange("B999XX116", "B000XX116", "C010AA116");
-            // Assert.True(a == "C000AA116"); //failed
             Assert.True(RegMark.GetNextMarkAfterInRange("B999XX116", "B000XX116", "C010AA116") == "E000AA116");
         }
 
