@@ -10,11 +10,10 @@ namespace REG_MARK_LIB
         /// <summary>
         /// Проверяет номерной знак автомобиля на подлинность.
         /// </summary>
-        /// <param name="mark"></param>
-        /// <returns></returns>
+        /// <param name="mark">Номерной знак.</param>
         public static bool CheckMark(string mark)
         {
-            var letters = "abekmhopctyx";
+            var letters = "ABEKMHOPCTYX";
             var pattern = $@"[{letters}]{{1}}[0-9]{{3}}[{letters}]{{2}}[0-9]{{2,3}}";
             if (!Regex.IsMatch(mark, pattern)) return false;
             var pattern2 = "(^01$)|(^02$)|(^03$)|(^04$)|(^05$)|(^06$)|(^07$)|(^08$)|(^09$)|(^10$)|(^11$)|(^12$)|" + 
@@ -30,34 +29,38 @@ namespace REG_MARK_LIB
                            "(^174$)|(^177$)|(^178$)|(^186$)|(^190$)|(^196$)|(^197$)|(^199$)|(^716$)|(^725$)|(^750$)|(^777$)|(^788$)|(^790$)|(^797$)";
             return Regex.IsMatch(new string(mark.Skip(6).ToArray()), pattern2);
         }
-
+        
+        /// <summary>
+        /// Возвращает следующий номерной знак.
+        /// </summary>
+        /// <param name="mark">Номерной знак.</param>
         public static string GetNextMarkAfter(string mark)
         {
             //a123bc?11 -> "123", "abc"
             var region = new string(mark.Skip(6).ToArray());
-            var letters = "abekmhopctyx";
             var markNumbers = Convert.ToInt32(new string(mark.Skip(1).Take(3).ToArray()));
             var markLetters = new StringBuilder(new string(mark.Take(1).ToArray()) + new string(mark.Skip(4).Take(2).ToArray()));
             if (markNumbers == 999)
             {
-                if (markLetters[2] != 'x')
+                markNumbers = 0;
+                if (markLetters[2] != 'X')
                 {
                     markLetters[2] = IncrementMarkLetter(markLetters[2]);
                 }
-                else if (markLetters[1] != 'x')
+                else if (markLetters[1] != 'X')
                 {
                     markLetters[1] = IncrementMarkLetter(markLetters[1]);
-                    markLetters[2] = 'a';
+                    markLetters[2] = 'A';
                 }
-                else if (markLetters[0] != 'x')
+                else if (markLetters[0] != 'X')
                 {
                     markLetters[0] = IncrementMarkLetter(markLetters[0]);
-                    markLetters[1] = 'a';
-                    markLetters[2] = 'a';
+                    markLetters[1] = 'A';
+                    markLetters[2] = 'A';
                 }
                 else // x999xx
                 {
-                    return "a000aa";
+                    return $"A000AA{region}";
                 }
 
                 return $"{markLetters[0]}{GetMarkNumbersString(markNumbers)}{markLetters[1]}{markLetters[2]}{region}";
@@ -78,8 +81,8 @@ namespace REG_MARK_LIB
         
         private static char IncrementMarkLetter(char letter)
         {
-            var letters = "abekmhopctyx";
-            return letter == 'x' ? 'a' : letters[letters.IndexOf(letter) + 1];
+            var letters = "ABEKMHOPCTYX";
+            return letter == 'X' ? 'A' : letters[letters.IndexOf(letter) + 1];
         }
 
         private static string GetMarkNumbersString(int nums)

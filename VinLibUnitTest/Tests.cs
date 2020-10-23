@@ -27,6 +27,7 @@ namespace VinLibUnitTest
             Assert.True(Vin.CheckVIN("WVWHV7AJ0AW084467"));
             Assert.False(Vin.CheckVIN("KLAVA6928XdB203010"));
             Assert.False(Vin.CheckVIN("ZZZVA6928XB203ZZZ"));
+            Assert.True(Vin.CheckVIN("4Y1SL65848Z411439"));
         }
 
         [Test]
