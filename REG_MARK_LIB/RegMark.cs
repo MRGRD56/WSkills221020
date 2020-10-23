@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Text;
 using System.Text.RegularExpressions;
 
 namespace REG_MARK_LIB
@@ -13,7 +14,7 @@ namespace REG_MARK_LIB
         /// <returns></returns>
         public static bool CheckMark(string mark)
         {
-            var letters = "ABEKMHOPCTYX";
+            var letters = "abekmhopctyx";
             var pattern = $@"[{letters}]{{1}}[0-9]{{3}}[{letters}]{{2}}[0-9]{{2,3}}";
             if (!Regex.IsMatch(mark, pattern)) return false;
             var pattern2 = "(^01$)|(^02$)|(^03$)|(^04$)|(^05$)|(^06$)|(^07$)|(^08$)|(^09$)|(^10$)|(^11$)|(^12$)|" + 
@@ -32,7 +33,37 @@ namespace REG_MARK_LIB
 
         public static string GetNextMarkAfter(string mark)
         {
-            throw new NotImplementedException();
+            //a123bc?11 -> "123", "abc"
+            var region = new string(mark.Skip(6).ToArray());
+            var letters = "abekmhopctyx";
+            var markNumbers = Convert.ToInt32(new string(mark.Skip(1).Take(3).ToArray()));
+            var markLetters = new StringBuilder(new string(mark.Take(1).ToArray()) + new string(mark.Skip(4).Take(2).ToArray()));
+            if (markNumbers == 999)
+            {
+                if (markLetters[2] != 'x')
+                {
+                    markLetters[2] = IncrementMarkLetter(markLetters[2]);
+                }
+                else if (markLetters[1] != 'x')
+                {
+                    markLetters[1] = IncrementMarkLetter(markLetters[1]);
+                    markLetters[2] = 'a';
+                }
+                else if (markLetters[0] != 'x')
+                {
+                    markLetters[0] = IncrementMarkLetter(markLetters[0]);
+                    markLetters[1] = 'a';
+                    markLetters[2] = 'a';
+                }
+                else // x999xx
+                {
+                    return "a000aa";
+                }
+
+                return $"{markLetters[0]}{GetMarkNumbersString(markNumbers)}{markLetters[1]}{markLetters[2]}{region}";
+            }
+
+            return $"{markLetters[0]}{GetMarkNumbersString(markNumbers + 1)}{markLetters[1]}{markLetters[2]}{region}";
         }
 
         public static string GetNextMarkAfterInRange(string prevMark, string rangeStart, string rangeEnd)
@@ -43,6 +74,29 @@ namespace REG_MARK_LIB
         public static int GetCombinationsCountInRange(string mark1, string mark2)
         {
             throw new NotImplementedException();
+        }
+        
+        private static char IncrementMarkLetter(char letter)
+        {
+            var letters = "abekmhopctyx";
+            return letter == 'x' ? 'a' : letters[letters.IndexOf(letter) + 1];
+        }
+
+        private static string GetMarkNumbersString(int nums)
+        {
+            var numsString = nums.ToString();
+
+            switch (numsString.Length)
+            {
+                case 1:
+                    return $"00{numsString}";
+                case 2:
+                    return $"0{numsString}";
+                case 3:
+                    return numsString;
+                default:
+                    throw new Exception("GetMarkNumbersString() error");
+            }
         }
     }
 }
