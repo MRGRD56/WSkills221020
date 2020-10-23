@@ -83,7 +83,14 @@ namespace REG_MARK_LIB
 
         public static int GetCombinationsCountInRange(string mark1, string mark2)
         {
-            throw new NotImplementedException();
+            var count = 0;
+            while (CompareRegMarks(mark1, mark2) < 0)
+            {
+                mark1 = GetNextMarkAfter(mark1);
+                count++;
+            }
+
+            return count;
         }
         
         private static char IncrementMarkLetter(char letter)
